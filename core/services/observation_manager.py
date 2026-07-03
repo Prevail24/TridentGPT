@@ -3,7 +3,8 @@ from datetime import date
 from core.models.observation import Observation
 from core.storage.markdown_storage import MarkdownStorage
 from core.services.id_generator import IDGenerator
-
+from core.parsers.observation_parser import ObservationParser
+from core.parsers.observation_parser import ObservationParser
 
 class ObservationManager:
     """
@@ -39,7 +40,9 @@ class ObservationManager:
 
         return observation
     
-    def open(self, observation_id: str) -> str:
+    def open(self, observation_id: str) -> Observation:
         storage = MarkdownStorage()
-
-        return storage.load(observation_id)   
+        markdown = storage.load(observation_id)
+        
+        parser = ObservationParser()
+        return parser.parse(markdown)  
