@@ -1,6 +1,7 @@
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+from core.config import Config
 
 console = Console()
 
@@ -13,10 +14,10 @@ class TerminalRenderer:
 
         console.print(
             Panel.fit(
-                "[bold cyan]⚓ TRIDENTGPT[/bold cyan]\n"
+                f"[bold cyan]⚓ {Config.APP_NAME}[/bold cyan]\n"
                 "[green]The Observatory Terminal[/green]\n\n"
                 f"[bold]Mission:[/bold] {mission}\n\n"
-                "[italic]The Loom remembers what others forget.[/italic]",
+                f"[italic]{Config.BRAND_QUOTE}[/italic]",
                 border_style="green",
             )
         )

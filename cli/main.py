@@ -1,7 +1,9 @@
 import argparse
 
-from cli.commands.new import new_observation
+from cli.commands.dashboard import show_dashboard
 from cli.commands.list import list_observations
+from cli.commands.mission import new_mission
+from cli.commands.new import new_observation
 from cli.commands.open import open_observation
 
 
@@ -23,6 +25,11 @@ def main():
         help="List Observations"
     )
 
+    subparsers.add_parser(
+        "mission",
+        help="Create a new Mission"
+    )
+
     open_parser = subparsers.add_parser(
         "open",
         help="Open an Observation"
@@ -41,8 +48,10 @@ def main():
         list_observations()
     elif args.command == "open":
         open_observation(args.observation_id)
+    elif args.command == "mission":
+        new_mission()
     else:
-        parser.print_help()
+        show_dashboard()
 
 
 if __name__ == "__main__":

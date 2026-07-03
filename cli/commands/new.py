@@ -1,6 +1,6 @@
+from core import engine
 from core.rendering.terminal_renderer import TerminalRenderer
-from core.services.observation_manager import ObservationManager
-
+from core.engine import TridentEngine
 
 def new_observation():
     renderer = TerminalRenderer()
@@ -11,9 +11,9 @@ def new_observation():
     category = input("Category       : ")
     difficulty = input("Difficulty     : ")
 
-    manager = ObservationManager()
+    engine = TridentEngine()
 
-    result = manager.create(
+    result = engine.observations.create(
         title=title,
         platform=platform,
         category=category,

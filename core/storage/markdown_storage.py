@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from core.config import Config
 from core.models.observation import Observation
 
 
@@ -56,7 +56,7 @@ class MarkdownStorage:
         Lists all raw Observation markdown files.
         """
 
-        observations_root = Path("knowledge/observations")
+        observations_root = Config.OBSERVATIONS_DIR
 
         if not observations_root.exists():
             return []

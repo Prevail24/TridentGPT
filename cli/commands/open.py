@@ -1,12 +1,12 @@
 from core.rendering.terminal_renderer import TerminalRenderer
-from core.services.observation_manager import ObservationManager
+from core.engine import TridentEngine
 
 
 def open_observation(observation_id: str):
     renderer = TerminalRenderer()
     renderer.banner("Open Observation")
 
-    manager = ObservationManager()
-    observation = manager.open(observation_id)
+    engine = TridentEngine()
+    observation = engine.observations.open(observation_id)
 
     renderer.observation_card(observation)

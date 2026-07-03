@@ -1,13 +1,13 @@
 from core.rendering.terminal_renderer import TerminalRenderer
-from core.services.observation_manager import ObservationManager
+from core.engine import TridentEngine
 
 
 def list_observations():
     renderer = TerminalRenderer()
     renderer.banner("Observation Archive")
 
-    manager = ObservationManager()
+    engine = TridentEngine()
 
-    observations = manager.list()
+    observations = engine.observations.list()
 
     renderer.archive(observations)
