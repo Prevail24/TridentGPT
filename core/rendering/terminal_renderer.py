@@ -1,0 +1,55 @@
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+
+console = Console()
+
+
+class TerminalRenderer:
+
+    def banner(self, mission: str):
+
+        console.print()
+
+        console.print(
+            Panel.fit(
+                "[bold cyan]⚓ TRIDENTGPT[/bold cyan]\n"
+                "[green]The Observatory Terminal[/green]\n\n"
+                f"[bold]Mission:[/bold] {mission}\n\n"
+                "[italic]The Loom remembers what others forget.[/italic]",
+                border_style="green",
+            )
+        )
+
+    def observation_card(self, observation):
+
+        table = Table(show_header=False, box=None)
+
+        table.add_row("[bold]ID[/bold]", observation.id)
+        table.add_row("[bold]Title[/bold]", observation.title)
+        table.add_row("[bold]Platform[/bold]", observation.platform)
+        table.add_row("[bold]Category[/bold]", observation.category)
+        table.add_row("[bold]Difficulty[/bold]", observation.difficulty)
+        table.add_row("[bold]Status[/bold]", observation.status)
+        table.add_row("[bold]Observer[/bold]", observation.author)
+
+        console.print()
+
+        console.print(
+            Panel(
+                table,
+                title="[bold cyan]Observation[/bold cyan]",
+                border_style="green",
+            )
+        )
+
+    def success(self, message: str):
+
+        console.print()
+
+        console.print(
+            Panel.fit(
+                f"[bold green]✓ {message}[/bold green]",
+                border_style="green",
+            )
+        )

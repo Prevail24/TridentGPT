@@ -36,11 +36,10 @@ class ObservationManager:
 
         storage = MarkdownStorage()
         filepath = storage.save(observation)
-        print(f"Saved to: {filepath}")
 
         return observation
     
     def open(self, observation_id: str) -> str:
         storage = MarkdownStorage()
-        
+
         return storage.load(observation_id)   

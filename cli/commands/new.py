@@ -1,17 +1,16 @@
+from core.rendering.terminal_renderer import TerminalRenderer
 from core.services.observation_manager import ObservationManager
 
 
-
 def new_observation():
-
-    print("\n═══════════════════════════════")
-    print("      ⚓ TRIDENTGPT v1.0")
-    print("═══════════════════════════════\n")
+    renderer = TerminalRenderer()
+    renderer.banner("Create New Observation")
 
     title = input("Challenge Name : ")
     platform = input("Platform       : ")
     category = input("Category       : ")
     difficulty = input("Difficulty     : ")
+
     manager = ObservationManager()
 
     observation = manager.create(
@@ -21,6 +20,5 @@ def new_observation():
         difficulty=difficulty,
     )
 
-    print("\nObservation Created\n")
-
-    print(observation)
+    renderer.success("Thread successfully woven.")
+    renderer.observation_card(observation)
