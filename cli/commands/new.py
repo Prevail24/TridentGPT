@@ -10,6 +10,7 @@ def new_observation():
     platform = input("Platform       : ")
     category = input("Category       : ")
     difficulty = input("Difficulty     : ")
+    mission_id = input("Mission ID     : ").strip() or None
 
     engine = TridentEngine()
 
@@ -18,6 +19,7 @@ def new_observation():
         platform=platform,
         category=category,
         difficulty=difficulty,
+        mission_id=mission_id,
     )
 
     renderer.success(

@@ -18,7 +18,8 @@ class ObservationManager:
         category: str,
         difficulty: str,
         author: str = "Prevail",
-    ) -> Observation:
+        mission_id: str | None = None,
+    ) -> CreateObservationResult:
 
         generator = IDGenerator()
         observation_id = generator.generate("OBS")
@@ -33,10 +34,19 @@ class ObservationManager:
             platform=platform,
             category=category,
             difficulty=difficulty,
+            mission_id=mission_id,
         )
 
         storage = MarkdownStorage()
         filepath = storage.save(observation)
+
+        if mission_id:
+            from core.services.mission_service import MissionService
+
+            MissionService().add_observation(
+                mission_id,
+                observation.id,
+            )
 
         return CreateObservationResult(
             observation=observation,

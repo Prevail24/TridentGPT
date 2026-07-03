@@ -44,6 +44,27 @@ class TerminalRenderer:
             )
         )
 
+    def mission_card(self, mission):
+
+        table = Table(show_header=False, box=None)
+
+        table.add_row("[bold]ID[/bold]", mission.id)
+        table.add_row("[bold]Title[/bold]", mission.title)
+        table.add_row("[bold]Type[/bold]", mission.mission_type)
+        table.add_row("[bold]Priority[/bold]", mission.priority)
+        table.add_row("[bold]Status[/bold]", mission.status)
+        table.add_row("[bold]Observer[/bold]", mission.observer)
+
+        console.print()
+
+        console.print(
+            Panel(
+                table,
+                title="[bold cyan]Mission[/bold cyan]",
+                border_style="green",
+            )
+        )
+
     def archive(self, observations):
 
         table = Table(

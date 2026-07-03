@@ -13,6 +13,7 @@ class Observation(Thread):
     platform: str = ""
     category: str = ""
     difficulty: str = ""
+    mission_id: str | None = None
     status: str = "active"
 
     evidence: list[str] = field(default_factory=list)

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from core.config import Config
 from core.models.mission import Mission
+from core.parsers.mission_parser import MissionParser
 
 
 class CreateMissionResult:
@@ -39,6 +40,23 @@ class MissionService:
             filepath=str(filepath),
         )
 
+    def open(self, mission_id: str) -> Mission:
+        year = mission_id.split("-")[1]
+        filepath = Config.KNOWLEDGE_DIR / "missions" / year / f"{mission_id}.md"
+
+        markdown = filepath.read_text(encoding="utf-8")
+
+        parser = MissionParser()
+        return parser.parse(markdown)
+
+    def save(self, mission: Mission) -> Path:
+        return self._save(mission)
+
+    def add_observation(self, mission_id: str, observation_id: str):
+        mission = self.open(mission_id)
+        mission.add_observation(observation_id)
+        self.save(mission)
+
     def _generate_id(self) -> str:
         year = date.today().year
         missions_root = Config.KNOWLEDGE_DIR / "missions" / str(year)
@@ -56,6 +74,11 @@ class MissionService:
 
         filepath = missions_root / f"{mission.id}.md"
 
+        observations = "\n".join(
+            f"- {obs_id}"
+            for obs_id in mission.observations
+        )
+
         content = f"""# {mission.title}
 
 ## Metadata
@@ -71,6 +94,7 @@ class MissionService:
 
 # Observations
 
+{observations}
 """
 
         filepath.write_text(content, encoding="utf-8")
