@@ -1,25 +1,13 @@
-from pathlib import Path
+from core.rendering.terminal_renderer import TerminalRenderer
+from core.services.observation_manager import ObservationManager
 
 
 def list_observations():
-    observations_root = Path("knowledge/observations")
+    renderer = TerminalRenderer()
+    renderer.banner("Observation Archive")
 
-    print("\n═══════════════════════════════")
-    print("      ⚓ TRIDENTGPT v1.0")
-    print("═══════════════════════════════\n")
+    manager = ObservationManager()
 
-    print("Observation Archive")
-    print("-------------------")
+    observations = manager.list()
 
-    if not observations_root.exists():
-        print("No observations found.")
-        return
-
-    observations = sorted(observations_root.glob("*/OBS-*.md"))
-
-    if not observations:
-        print("No observations found.")
-        return
-
-    for observation in observations:
-        print(f"- {observation.stem}")
+    renderer.archive(observations)

@@ -13,12 +13,22 @@ def new_observation():
 
     manager = ObservationManager()
 
-    observation = manager.create(
+    result = manager.create(
         title=title,
         platform=platform,
         category=category,
         difficulty=difficulty,
     )
 
-    renderer.success("Thread successfully woven.")
-    renderer.observation_card(observation)
+    renderer.success(
+        "✓ Thread Successfully Woven",
+        f"""Observation ID
+
+{result.observation.id}
+
+Saved To
+
+{result.filepath}""",
+    )
+
+    renderer.observation_card(result.observation)

@@ -43,13 +43,50 @@ class TerminalRenderer:
             )
         )
 
-    def success(self, message: str):
+    def archive(self, observations):
+
+        table = Table(
+            title="Observation Archive",
+            border_style="green",
+            show_lines=False,
+        )
+
+        table.add_column("ID", style="cyan", no_wrap=True)
+        table.add_column("Title", style="white")
+        table.add_column("Platform", style="green")
+        table.add_column("Status", style="yellow")
+
+        for observation in observations:
+            table.add_row(
+                observation.id,
+                observation.title,
+                observation.platform,
+                observation.status.upper(),
+            )
+
+        console.print()
+        console.print(table)
+
+    def success(self, title: str, message: str):
+
+        console.print()
 
         console.print()
 
         console.print(
             Panel.fit(
-                f"[bold green]✓ {message}[/bold green]",
+                f"[bold green]{title}[/bold green]\n\n{message}",
                 border_style="green",
+            )
+        )
+
+    def warning(self, title: str, message: str):
+
+        console.print()
+
+        console.print(
+            Panel.fit(
+                f"[bold yellow]{title}[/bold yellow]\n\n{message}",
+                border_style="yellow",
             )
         )

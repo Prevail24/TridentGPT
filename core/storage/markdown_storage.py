@@ -50,3 +50,20 @@ class MarkdownStorage:
             )
 
         return matches[0].read_text(encoding="utf-8")
+
+    def list(self) -> list[str]:
+        """
+        Lists all raw Observation markdown files.
+        """
+
+        observations_root = Path("knowledge/observations")
+
+        if not observations_root.exists():
+            return []
+
+        files = sorted(observations_root.glob("**/OBS-*.md"))
+
+        return [
+            file.read_text(encoding="utf-8")
+            for file in files
+        ]

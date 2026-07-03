@@ -17,9 +17,16 @@ class ObservationParser:
         metadata = {}
 
         for line in lines:
-            if line.startswith("- "):
-                key, value = line[2:].split(":", 1)
-                metadata[key.strip()] = value.strip()
+            if not line.startswith("- "):
+                continue
+
+            item = line[2:].strip()
+
+            if ":" not in item:
+                continue
+
+            key, value = item.split(":", 1)
+            metadata[key.strip()] = value.strip()
 
         return Observation(
             id=metadata["ID"],
