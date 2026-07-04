@@ -54,3 +54,33 @@ class EvidenceRepository:
         filepath.write_text(content, encoding="utf-8")
 
         return filepath
+
+    def open(self, evidence_id: str) -> Evidence:
+        """
+        Return one Evidence object by ID.
+        """
+        year = evidence_id.split("-")[1]
+
+        filepath = (
+            Config.KNOWLEDGE_DIR
+            / "evidence"
+            / year
+            / f"{evidence_id}.md"
+        )
+
+        markdown = filepath.read_text(encoding="utf-8")
+
+        return self.parser.parse(markdown)
+
+    def list(self) -> list[Evidence]:
+        """
+        Return all Evidence objects stored in The Loom.
+        """
+        evidence_root = Config.KNOWLEDGE_DIR / "evidence"
+
+        evidence_items = []
+
+        for file in sorted(evidence_root.glob("**/*.md")):
+            evidence_items.append(self.open(file.stem))
+
+        return evidence_items

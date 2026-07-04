@@ -5,7 +5,6 @@ from core.repositories.evidence_repository import EvidenceRepository
 from core.results.create_evidence_result import CreateEvidenceResult
 from core.services.evidence_id_generator import EvidenceIDGenerator
 from core.services.observation_service import ObservationService
-from core.services.observation_service import ObservationService
 
 
 class EvidenceService:
@@ -49,3 +48,9 @@ class EvidenceService:
             evidence=evidence,
             filepath=str(filepath),
         )
+
+    def count(self) -> int:
+        """
+        Return the total number of Evidence objects stored in The Loom.
+        """
+        return len(self.repository.list())

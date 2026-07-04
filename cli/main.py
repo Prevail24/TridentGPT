@@ -8,6 +8,9 @@ from cli.commands.open import open_observation
 from cli.commands.open_mission import open_mission
 from cli.commands.evidence import create_evidence
 from cli.commands.weaver import analyze_observation
+from cli.commands.entity import create_entity
+
+from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
 
 
@@ -93,11 +96,31 @@ def main():
         help="Observation ID",
     )
 
+    map_parser = subparsers.add_parser(
+        "map",
+        help="Visualize an investigation."
+    )
+
+    map_parser.add_argument(
+        "mission_id",
+        help="Mission ID (e.g. MIS-2026-0001)"
+    )
+
     evidence_subparsers = evidence_parser.add_subparsers(dest="action")
 
     evidence_subparsers.add_parser(
         "create",
         help="Create new Evidence",
+    )
+
+    entity_parser = subparsers.add_parser(
+        "entity",
+        help="Manage entities.",
+    )
+
+    entity_parser.add_argument(
+        "action",
+        choices=["create"],
     )
 
     args = parser.parse_args()
@@ -134,8 +157,18 @@ def main():
         else:
             weaver_parser.print_help()
 
+    elif args.domain == "map":
+        from cli.commands.map import map_mission
+        map_mission(args.mission_id)
+
+    elif args.domain == "entity":
+        if args.action == "create":
+            create_entity()
+        else:
+            entity_parser.print_help()
+
     else:
-        show_dashboard()
+        ObservatoryDashboard().show()
 
 
 if __name__ == "__main__":

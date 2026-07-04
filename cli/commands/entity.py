@@ -1,0 +1,26 @@
+from core.engine import TridentEngine
+
+engine = TridentEngine()
+
+
+def create_entity():
+
+    print()
+
+    entity_type = input("Entity Type  : ")
+    value = input("Entity Value : ")
+
+    print()
+
+    entity = engine.entity.create(
+        type=entity_type,
+        value=value,
+    )
+
+    print("✓ Entity created")
+
+    print(f"ID    : {entity.id}")
+    print(f"Type  : {entity.type}")
+    print(f"Value : {entity.value}")
+
+    print()

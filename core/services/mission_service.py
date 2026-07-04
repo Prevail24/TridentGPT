@@ -54,6 +54,12 @@ class MissionService:
         mission.add_observation(observation_id)
         self.save(mission)
 
+    def count(self) -> int:
+        """
+        Return the total number of Missions stored in The Loom.
+        """
+        return len(self.repository.list())
+
     def _generate_id(self) -> str:
         year = date.today().year
         missions_root = Config.KNOWLEDGE_DIR / "missions" / str(year)

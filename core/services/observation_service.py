@@ -72,3 +72,9 @@ class ObservationService:
 
     def list(self) -> list[Observation]:
         return self.repository.list()
+
+    def count(self) -> int:
+        """
+        Return the total number of Observations stored in The Loom.
+        """
+        return len(self.repository.list())
