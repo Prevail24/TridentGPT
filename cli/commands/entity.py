@@ -1,4 +1,5 @@
 from core.engine import TridentEngine
+from core.renderers.entity_renderer import EntityRenderer
 
 engine = TridentEngine()
 
@@ -24,3 +25,8 @@ def create_entity():
     print(f"Value : {entity.value}")
 
     print()
+
+
+def open_entity(entity_id: str):
+    entity = engine.entity.open(entity_id)
+    EntityRenderer().render(entity)

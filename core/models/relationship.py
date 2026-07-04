@@ -1,15 +1,17 @@
 from dataclasses import dataclass
-from datetime import date
 
 
 @dataclass
 class Relationship:
+    """
+    Connects two Entities together.
+    """
+
     id: str
 
-    source_id: str
-    target_id: str
+    source: str
+    relationship: str
+    target: str
 
-    relation: str
-
-    created: date
-    author: str = "Prevail"
+    confidence: float = 1.0
+    status: str = "active"

@@ -1,7 +1,6 @@
-from datetime import date
-
 from core.models.relationship import Relationship
 from core.repositories.relationship_repository import RelationshipRepository
+from core.services.relationship_id_generator import RelationshipIDGenerator
 
 
 class RelationshipService:
@@ -11,21 +10,25 @@ class RelationshipService:
 
     def __init__(self):
         self.repository = RelationshipRepository()
+        self.id_generator = RelationshipIDGenerator()
 
-    def link(
-        self,
-        source_id: str,
-        target_id: str,
-        relation: str,
-        author: str = "Prevail",
-    ) -> Relationship:
-        relationship = Relationship(
-            id="REL-TEMP",
-            source_id=source_id,
-            target_id=target_id,
-            relation=relation,
-            created=date.today(),
-            author=author,
+    def create(self, source: str, relationship: str, target: str) -> Relationship:
+        relationship_obj = Relationship(
+            id=self.id_generator.generate(),
+            source=source,
+            relationship=relationship,
+            target=target,
         )
 
-        return relationship
+        self.repository.save(relationship_obj)
+
+        return relationship_obj
+
+    def open(self, relationship_id: str) -> Relationship:
+        return self.repository.open(relationship_id)
+
+    def list(self):
+        return self.repository.list()
+
+    def count(self):
+        return len(self.repository.list())

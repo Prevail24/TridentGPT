@@ -8,8 +8,9 @@ from cli.commands.open import open_observation
 from cli.commands.open_mission import open_mission
 from cli.commands.evidence import create_evidence
 from cli.commands.weaver import analyze_observation
-from cli.commands.entity import create_entity
-
+from cli.commands.entity import create_entity, open_entity
+from cli.commands.search import search
+from cli.commands.relationship import create_relationship, open_relationship
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
 
@@ -21,13 +22,11 @@ def main():
     )
 
     subparsers = parser.add_subparsers(dest="domain")
-
     mission_parser = subparsers.add_parser(
         "mission",
         help="Mission commands",
     )
     mission_subparsers = mission_parser.add_subparsers(dest="action")
-
     mission_subparsers.add_parser(
         "create",
         help="Create a new Mission",
@@ -39,7 +38,6 @@ def main():
     )
     
     observation_subparsers = observation_parser.add_subparsers(dest="action")
-    
     mission_open_parser = mission_subparsers.add_parser(
         "open",
         help="Open a Mission",
@@ -85,7 +83,6 @@ def main():
     )
 
     weaver_subparsers = weaver_parser.add_subparsers(dest="action")
-
     weaver_analyze_parser = weaver_subparsers.add_parser(
         "analyze",
         help="Analyze an Observation",
@@ -107,9 +104,8 @@ def main():
     )
 
     evidence_subparsers = evidence_parser.add_subparsers(dest="action")
-
     evidence_subparsers.add_parser(
-        "create",
+        "create", 
         help="Create new Evidence",
     )
 
@@ -120,7 +116,39 @@ def main():
 
     entity_parser.add_argument(
         "action",
-        choices=["create"],
+        choices=["create", "open"],
+    )
+
+    entity_parser.add_argument(
+        "entity_id",
+        help="Entity ID",
+        nargs="?",
+    )
+
+    relationship_parser = subparsers.add_parser(
+        "relationship",
+        help="Manage relationships.",
+    )
+
+    relationship_parser.add_argument(
+        "action",
+        choices=["create", "open"],
+    )
+
+    relationship_parser.add_argument(
+        "relationship_id",
+        nargs="?",
+        help="Relationship ID",
+    )
+
+    search_parser = subparsers.add_parser(
+        "search",
+        help="Search The Loom",
+    )
+
+    search_parser.add_argument(
+        "query",
+        help="Search query",
     )
 
     args = parser.parse_args()
@@ -164,12 +192,25 @@ def main():
     elif args.domain == "entity":
         if args.action == "create":
             create_entity()
+        elif args.action == "open":
+            open_entity(args.entity_id)
         else:
             entity_parser.print_help()
 
+    elif args.domain == "search":
+        search(args.query)
+
+    elif args.domain == "relationship":
+        if args.action == "create":
+            create_relationship()
+        elif args.action == "open":
+            open_relationship(args.relationship_id)
+        else:
+            relationship_parser.print_help()
+
+
     else:
         ObservatoryDashboard().show()
-
 
 if __name__ == "__main__":
     main()
