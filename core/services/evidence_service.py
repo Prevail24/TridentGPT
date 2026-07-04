@@ -4,6 +4,8 @@ from core.models.evidence import Evidence
 from core.repositories.evidence_repository import EvidenceRepository
 from core.results.create_evidence_result import CreateEvidenceResult
 from core.services.evidence_id_generator import EvidenceIDGenerator
+from core.services.observation_service import ObservationService
+from core.services.observation_service import ObservationService
 
 
 class EvidenceService:
@@ -37,6 +39,11 @@ class EvidenceService:
         )
 
         filepath = self.repository.save(evidence)
+
+        ObservationService().add_evidence(
+            observation_id=observation_id,
+            evidence_id=evidence.id,
+        )
 
         return CreateEvidenceResult(
             evidence=evidence,

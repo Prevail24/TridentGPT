@@ -56,6 +56,19 @@ class ObservationService:
     
     def open(self, observation_id: str) -> Observation:
         return self.repository.open(observation_id)
-    
+
+    def add_evidence(
+        self,
+        observation_id: str,
+        evidence_id: str,
+    ):
+        """
+        Attach evidence to an Observation.
+        """
+
+        observation = self.open(observation_id)
+        observation.add_evidence(evidence_id)
+        self.repository.save(observation)
+
     def list(self) -> list[Observation]:
         return self.repository.list()

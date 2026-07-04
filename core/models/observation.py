@@ -23,6 +23,9 @@ class Observation(Thread):
     dead_ends: list[str] = field(default_factory=list)
 
     def add_evidence(self, evidence_id: str):
+        """
+        Attach an Evidence object to this Observation.
+        """
         if evidence_id not in self.evidence:
             self.evidence.append(evidence_id)
 
