@@ -11,8 +11,10 @@ from cli.commands.weaver import analyze_observation
 from cli.commands.entity import create_entity, open_entity
 from cli.commands.search import search
 from cli.commands.relationship import create_relationship, open_relationship
-from core.dashboards.observatory_dashboard import ObservatoryDashboard
+from cli.commands.map import map_mission, map_entity
+from cli.commands.analyze import analyze_entity
 
+from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
 
 def main():
@@ -95,12 +97,17 @@ def main():
 
     map_parser = subparsers.add_parser(
         "map",
-        help="Visualize an investigation."
+        help="Visualize an investigation.",
     )
 
     map_parser.add_argument(
-        "mission_id",
-        help="Mission ID (e.g. MIS-2026-0001)"
+        "target_type",
+        choices=["mission", "entity"],
+    )
+
+    map_parser.add_argument(
+        "target_id",
+        help="Target ID",
     )
 
     evidence_subparsers = evidence_parser.add_subparsers(dest="action")
@@ -139,6 +146,20 @@ def main():
         "relationship_id",
         nargs="?",
         help="Relationship ID",
+    )
+
+    analyze_parser = subparsers.add_parser(
+        "analyze",
+        help="Run intelligence analysis.",
+    )
+
+    analyze_parser.add_argument(
+        "target_type",
+        choices=["entity"],
+    )
+
+    analyze_parser.add_argument(
+        "target_id",
     )
 
     search_parser = subparsers.add_parser(
@@ -186,8 +207,10 @@ def main():
             weaver_parser.print_help()
 
     elif args.domain == "map":
-        from cli.commands.map import map_mission
-        map_mission(args.mission_id)
+        if args.target_type == "mission":
+            map_mission(args.target_id)
+        elif args.target_type == "entity":
+            map_entity(args.target_id)
 
     elif args.domain == "entity":
         if args.action == "create":
