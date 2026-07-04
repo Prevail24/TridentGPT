@@ -22,8 +22,9 @@ class Observation(Thread):
     hypotheses: list[str] = field(default_factory=list)
     dead_ends: list[str] = field(default_factory=list)
 
-    def add_evidence(self, item: str):
-        self.evidence.append(item)
+    def add_evidence(self, evidence_id: str):
+        if evidence_id not in self.evidence:
+            self.evidence.append(evidence_id)
 
     def add_note(self, note: str):
         self.notes.append(note)

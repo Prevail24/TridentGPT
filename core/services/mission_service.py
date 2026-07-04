@@ -3,7 +3,7 @@ from pathlib import Path
 
 from core.config import Config
 from core.models.mission import Mission
-from core.parsers.mission_parser import MissionParser
+from core.repositories.mission_repository import MissionRepository
 
 
 class CreateMissionResult:
@@ -14,6 +14,9 @@ class CreateMissionResult:
 
 
 class MissionService:
+    def __init__(self):
+        self.repository = MissionRepository()
+
     def create(
         self,
         title: str,
@@ -41,13 +44,7 @@ class MissionService:
         )
 
     def open(self, mission_id: str) -> Mission:
-        year = mission_id.split("-")[1]
-        filepath = Config.KNOWLEDGE_DIR / "missions" / year / f"{mission_id}.md"
-
-        markdown = filepath.read_text(encoding="utf-8")
-
-        parser = MissionParser()
-        return parser.parse(markdown)
+        return self.repository.open(mission_id)
 
     def save(self, mission: Mission) -> Path:
         return self._save(mission)

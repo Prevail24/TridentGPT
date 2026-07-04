@@ -1,6 +1,6 @@
 from core.services.mission_service import MissionService
-from core.services.observation_manager import ObservationManager
-
+from core.services.observation_service import ObservationService
+from core.services.evidence_service import EvidenceService
 
 class TridentEngine:
     """
@@ -8,5 +8,6 @@ class TridentEngine:
     """
 
     def __init__(self):
-        self.observations = ObservationManager()
+        self.observations = ObservationService()
         self.missions = MissionService()
+        self.evidence = EvidenceService()

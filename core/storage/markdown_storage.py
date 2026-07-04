@@ -10,9 +10,18 @@ class MarkdownStorage:
 
     def save(self, observation: Observation) -> Path:
         year = observation.created.year
-        folder = Path(f"knowledge/observations/{year}")
+        folder = Config.OBSERVATIONS_DIR / str(year)
         folder.mkdir(parents=True, exist_ok=True)
         filepath = folder / f"{observation.id}.md"
+        evidence = "\n".join(
+            f"- {evidence_id}"
+            for evidence_id in observation.evidence
+        )
+
+        notes = "\n".join(
+            f"- {note}"
+            for note in observation.notes
+        )
         content = f"""# {observation.title}
 
 ## Metadata
@@ -24,11 +33,19 @@ class MarkdownStorage:
 - Category: {observation.category}
 - Difficulty: {observation.difficulty}
 - Status: {observation.status}
+- Mission: {observation.mission_id or ""}
+
+---
+
+# Evidence
+
+{evidence}
 
 ---
 
 # Notes
 
+{notes}
 """
 
         filepath.write_text(content, encoding="utf-8")
