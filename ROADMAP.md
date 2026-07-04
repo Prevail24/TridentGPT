@@ -1,8 +1,8 @@
 
 
-# TridentGPT Roadmap
+# Trident Roadmap
 
-**Project Codename:** TridentGPT  
+**Project Codename:** Trident  
 **Parent World:** The Watchers  
 **Purpose:** A battle-tested OSINT CTF co-pilot for authorized investigations, Hack The Box challenges, training labs, and Watchers-style field reports.
 
