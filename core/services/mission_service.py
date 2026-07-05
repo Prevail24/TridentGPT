@@ -1,28 +1,37 @@
+from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
-from core.config import Config
 from core.models.mission import Mission
 from core.repositories.mission_repository import MissionRepository
 
 
+@dataclass
 class CreateMissionResult:
-    def __init__(self, mission: Mission, filepath: str, success: bool = True):
-        self.mission = mission
-        self.filepath = filepath
-        self.success = success
+    mission: Mission
+    filepath: str
+    success: bool = True
 
 
 class MissionService:
-    def __init__(self):
-        self.repository = MissionRepository()
+    """
+    Mission business logic.
+
+    Service owns mission creation and state transitions.
+    Repository owns persistence.
+    """
+
+    def __init__(self, repository: MissionRepository | None = None) -> None:
+        self.repository = repository or MissionRepository()
 
     def create(
         self,
         title: str,
         mission_type: str,
-        priority: str,
-        observer: str = "Prevail",
+        objective: str,
+        scope: str,
+        operator: str = "Prevail",
+        priority: str = "normal",
     ) -> CreateMissionResult:
         mission_id = self._generate_id()
 
@@ -30,13 +39,15 @@ class MissionService:
             id=mission_id,
             title=title,
             mission_type=mission_type,
+            objective=objective,
+            scope=scope,
+            operator=operator,
             priority=priority,
-            observer=observer,
             created=date.today(),
             updated=date.today(),
         )
 
-        filepath = self._save(mission)
+        filepath = self.repository.save(mission)
 
         return CreateMissionResult(
             mission=mission,
@@ -46,59 +57,39 @@ class MissionService:
     def open(self, mission_id: str) -> Mission:
         return self.repository.open(mission_id)
 
-    def save(self, mission: Mission) -> Path:
-        return self._save(mission)
+    def list(self) -> list[Mission]:
+        return self.repository.list()
 
-    def add_observation(self, mission_id: str, observation_id: str):
+    def save(self, mission: Mission) -> Path:
+        return self.repository.save(mission)
+
+    def complete(self, mission_id: str) -> Mission:
+        mission = self.open(mission_id)
+        mission.complete()
+        self.save(mission)
+        return mission
+
+    def archive(self, mission_id: str) -> Mission:
+        mission = self.open(mission_id)
+        mission.archive()
+        self.save(mission)
+        return mission
+
+    def add_observation(self, mission_id: str, observation_id: str) -> Mission:
         mission = self.open(mission_id)
         mission.add_observation(observation_id)
         self.save(mission)
+        return mission
 
     def count(self) -> int:
-        """
-        Return the total number of Missions stored in The Loom.
-        """
-        return len(self.repository.list())
+        return len(self.list())
 
     def _generate_id(self) -> str:
         year = date.today().year
-        missions_root = Config.KNOWLEDGE_DIR / "missions" / str(year)
-        missions_root.mkdir(parents=True, exist_ok=True)
-
-        existing = sorted(missions_root.glob(f"MIS-{year}-*.md"))
+        existing = [
+            mission
+            for mission in self.repository.list()
+            if mission.id.startswith(f"MIS-{year}-")
+        ]
         number = len(existing) + 1
-
         return f"MIS-{year}-{number:04d}"
-
-    def _save(self, mission: Mission) -> Path:
-        year = mission.created.year
-        missions_root = Config.KNOWLEDGE_DIR / "missions" / str(year)
-        missions_root.mkdir(parents=True, exist_ok=True)
-
-        filepath = missions_root / f"{mission.id}.md"
-
-        observations = "\n".join(
-            f"- {obs_id}"
-            for obs_id in mission.observations
-        )
-
-        content = f"""# {mission.title}
-
-## Metadata
-
-- ID: {mission.id}
-- Type: Mission
-- Mission Type: {mission.mission_type}
-- Priority: {mission.priority}
-- Observer: {mission.observer}
-- Status: {mission.status}
-
----
-
-# Observations
-
-{observations}
-"""
-
-        filepath.write_text(content, encoding="utf-8")
-        return filepath

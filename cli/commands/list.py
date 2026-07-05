@@ -8,3 +8,15 @@ def list_observations():
     engine = TridentEngine()
     observations = engine.observations.list()
     renderer.archive(observations)
+
+def list_missions():
+        renderer = TerminalRenderer()
+        renderer.banner("Mission Archive")
+        engine = TridentEngine()
+        missions = engine.missions.list()
+
+        if not missions:
+            renderer.info("No Missions Found", "Create one with: trident mission new")
+            return
+
+        renderer.archive(missions)    

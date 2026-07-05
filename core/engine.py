@@ -4,6 +4,7 @@ from core.services.evidence_service import EvidenceService
 from core.services.entity_service import EntityService
 from core.services.relationship_service import RelationshipService
 
+
 class TridentEngine:
     def __init__(self):
         self.observations = ObservationService()
@@ -11,5 +12,3 @@ class TridentEngine:
         self.evidence = EvidenceService()
         self.entity = EntityService()
         self.relationships = RelationshipService()
-
-    

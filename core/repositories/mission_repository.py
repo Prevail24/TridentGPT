@@ -1,22 +1,30 @@
-from core.config import Config
-from core.parsers.mission_parser import MissionParser
+from core.models.mission import Mission
+from core.storage.mission_storage import MissionStorage
 
 
 class MissionRepository:
-    def __init__(self):
-        self.parser = MissionParser()
+    """
+    Repository for active mission workspaces.
 
-    def open(self, mission_id: str):
-        year = mission_id.split("-")[1]
-        filepath = Config.KNOWLEDGE_DIR / "missions" / year / f"{mission_id}.md"
-        markdown = filepath.read_text(encoding="utf-8")
-        return self.parser.parse(markdown)
+    Repository owns retrieval and persistence coordination.
+    Storage owns file format.
+    Mission owns business state.
+    """
 
-    def list(self):
-        missions_root = Config.KNOWLEDGE_DIR / "missions"
-        missions = []
+    def __init__(self, storage: MissionStorage | None = None) -> None:
+        self.storage = storage or MissionStorage()
 
-        for file in sorted(missions_root.glob("**/*.md")):
-            missions.append(self.open(file.stem))
+    def save(self, mission: Mission):
+        return self.storage.save(mission)
+
+    def open(self, mission_id: str) -> Mission:
+        return self.storage.load(mission_id)
+
+    def list(self) -> list[Mission]:
+        missions: list[Mission] = []
+
+        for path in sorted(self.storage.root.glob("MIS-*/mission.md")):
+            mission_id = path.parent.name
+            missions.append(self.open(mission_id))
 
         return missions
