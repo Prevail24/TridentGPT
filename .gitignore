@@ -9,9 +9,9 @@ Thumbs.db
 *.iml
 
 # Engagement artifacts (NEVER commit these)
-evidence/
-runs/
-scans/
+/evidence/
+/runs/
+/scans/
 *.scan.db
 *.findings.db
 *.assets.db
