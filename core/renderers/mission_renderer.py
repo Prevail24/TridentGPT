@@ -13,29 +13,40 @@ class MissionRenderer:
 
         console.print(
             Panel.fit(
-                f"[bold cyan]⚓ {mission.title}[/bold cyan]\n"
-                "[italic]Mission Intelligence[/italic]",
+                "[bold cyan]🔱 Mission Overview[/bold cyan]",
                 border_style="cyan",
             )
         )
 
+        console.rule("[cyan]Operation")
+
         table = Table(show_header=False, box=None)
 
+        table.add_row("[bold]Mission[/bold]", mission.title)
         table.add_row("[bold]Mission ID[/bold]", mission.id)
-        table.add_row("[bold]Status[/bold]", mission.status.upper())
+        table.add_row("[bold]Status[/bold]", f"🟢 {mission.status.upper()}")
         table.add_row("[bold]Priority[/bold]", mission.priority.upper())
-        table.add_row("[bold]Observer[/bold]", mission.observer)
-
+        table.add_row("[bold]Operator[/bold]", mission.operator)
         console.print(table)
         console.print()
 
-        console.rule("[cyan]Observation Threads")
+        console.rule("[cyan]Intelligence Summary")
 
-        if mission.observations:
-            for observation_id in mission.observations:
-                console.print(f"[green]✓[/green] {observation_id}")
-        else:
-            console.print("[yellow]No observations yet.[/yellow]")
+        summary = Table(show_header=False, box=None)
+        summary.add_row("[bold]Entities[/bold]", "0")
+        summary.add_row("[bold]Observations[/bold]", str(len(mission.observations)))
+        summary.add_row("[bold]Evidence[/bold]", "0")
+        summary.add_row("[bold]Relationships[/bold]", "0")
+        console.print(summary)
+
+        console.print()
+        console.rule("[cyan]Operational State")
+
+        ops = Table(show_header=False, box=None)
+        ops.add_row("[bold]Workspace[/bold]", f"missions/{mission.id}/")
+        ops.add_row("[bold]Loom Status[/bold]", "READY")
+        ops.add_row("[bold]Next Command[/bold]", "trident observation create")
+        console.print(ops)
 
         console.print()
         console.print(f"[italic dim]{Config.BRAND_QUOTE}[/italic dim]")

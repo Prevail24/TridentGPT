@@ -21,8 +21,9 @@ class Entity:
     """
 
     id: str
-    type: str
+    entity_type: str
     value: str
+    display_name: str | None = None
 
     confidence: float = 1.0
     status: str = "active"
@@ -31,6 +32,10 @@ class Entity:
     evidence: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
 
+    @property
+    def label(self) -> str:
+        return self.display_name or self.value
+
     def add_observation(self, observation_id: str):
         if observation_id not in self.observations:
             self.observations.append(observation_id)
@@ -38,3 +43,7 @@ class Entity:
     def add_evidence(self, evidence_id: str):
         if evidence_id not in self.evidence:
             self.evidence.append(evidence_id)
+
+    def add_tag(self, tag: str):
+        if tag not in self.tags:
+            self.tags.append(tag)

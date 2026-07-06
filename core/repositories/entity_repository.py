@@ -60,3 +60,17 @@ class EntityRepository:
             entity_items.append(self.open(file.stem))
 
         return entity_items
+
+    def find_by_type_and_value(
+        self,
+        entity_type: str,
+        value: str,
+    ) -> Entity | None:
+        """
+        Return the canonical Entity matching the given type and normalized value.
+        """
+        for entity in self.list():
+            if entity.entity_type == entity_type and entity.value == value:
+                return entity
+
+        return None

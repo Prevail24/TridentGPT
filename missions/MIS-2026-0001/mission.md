@@ -10,7 +10,7 @@
 - operator: Prevail
 - created: 2026-07-05
 - updated: 2026-07-05
-- status: active
+- status: archived
 - priority: normal
 - playbooks: []
 - observations: []

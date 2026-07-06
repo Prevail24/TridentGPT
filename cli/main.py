@@ -13,6 +13,9 @@ from cli.commands.search import search
 from cli.commands.relationship import create_relationship, open_relationship
 from cli.commands.map import map_mission, map_entity
 from cli.commands.analyze import analyze_entity
+from cli.commands.status import mission_status
+from cli.commands.complete_mission import complete_mission
+from cli.commands.archive_mission import archive_mission
 
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
@@ -35,8 +38,18 @@ def main():
     )
 
     mission_subparsers.add_parser(
-        "create",
-        help="Create a new Mission (alias for new)",
+            "create",
+            help="Create a new Mission (alias for new)",
+        )
+
+    mission_subparsers.add_parser(
+        "status",
+        help="Show active Mission status",
+    )
+
+    mission_subparsers.add_parser(
+        "complete",
+        help="Complete the active Mission",
     )
 
     observation_parser = subparsers.add_parser(
@@ -59,6 +72,12 @@ def main():
         "list",
         help="List Missions",
     )
+
+    mission_subparsers.add_parser(
+        "archive",
+        help="Archive the active Mission",
+    )
+
     observation_subparsers.add_parser(
         "create",
         help="Create a new Observation",
@@ -184,6 +203,12 @@ def main():
             new_mission()
         elif args.action == "open":
             open_mission(args.mission_id)
+        elif args.action == "status":
+            mission_status()
+        elif args.action == "complete":
+            complete_mission()
+        elif args.action == "archive":
+            archive_mission()
         elif args.action == "list":
             list_missions()
         else:
@@ -235,6 +260,7 @@ def main():
             open_relationship(args.relationship_id)
         else:
             relationship_parser.print_help()
+    
 
 
     else:

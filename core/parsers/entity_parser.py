@@ -60,7 +60,7 @@ class EntityParser:
 
         return Entity(
             id=metadata["ID"],
-            type=metadata["Type"],
+            entity_type=metadata["Type"],
             value=metadata["Value"],
             confidence=float(metadata.get("Confidence", 1.0)),
             status=metadata.get("Status", "active"),
@@ -79,7 +79,7 @@ class EntityParser:
 ## Metadata
 
 - ID: {entity.id}
-- Type: {entity.type}
+- Type: {entity.entity_type}
 - Value: {entity.value}
 - Confidence: {entity.confidence}
 - Status: {entity.status}
