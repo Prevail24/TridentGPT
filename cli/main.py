@@ -16,6 +16,7 @@ from cli.commands.analyze import analyze_entity
 from cli.commands.status import mission_status
 from cli.commands.complete_mission import complete_mission
 from cli.commands.archive_mission import archive_mission
+from cli.commands.recon_nmap import recon_nmap
 
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
@@ -51,6 +52,22 @@ def main():
         "complete",
         help="Complete the active Mission",
     )
+
+    recon_parser = subparsers.add_parser(
+        "recon",
+        help="Run reconnaissance tools",
+    )
+
+    recon_subparsers = recon_parser.add_subparsers(
+        dest="tool",
+    )
+
+    nmap_parser = recon_subparsers.add_parser(
+        "nmap",
+        help="Run Nmap reconnaissance",
+    )
+
+    nmap_parser.add_argument("target")
 
     observation_parser = subparsers.add_parser(
         "observation",
@@ -213,6 +230,12 @@ def main():
             list_missions()
         else:
             mission_parser.print_help()
+
+    elif args.domain == "recon":
+        if args.tool == "nmap":
+            recon_nmap(args.target)
+        else:
+            recon_parser.print_help()
 
     elif args.domain == "observation":
         if args.action == "create":

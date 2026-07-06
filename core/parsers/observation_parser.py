@@ -1,73 +1,71 @@
-from datetime import date
+import json
+from datetime import datetime
 
 from core.models.observation import Observation
 
 
 class ObservationParser:
+    """
+    Serializes and parses canonical Trident observations.
+    """
+
+    def serialize(self, observation: Observation) -> str:
+        return f"""# Observation
+
+## Metadata
+
+- ID: {observation.id}
+- Mission: {observation.mission_id}
+- ToolRun: {observation.tool_run_id}
+- Evidence: {observation.evidence_id}
+- Category: {observation.category}
+- Confidence: {observation.confidence}
+- Observed At: {observation.observed_at.isoformat()}
+
+## Data
+
+```json
+{json.dumps(observation.data, indent=2, sort_keys=True)}
+```
+"""
 
     def parse(self, markdown: str) -> Observation:
-        """
-        Convert markdown into an Observation.
-        """
-
-        lines = markdown.splitlines()
-
-        title = lines[0].replace("# ", "").strip()
-
         metadata = {}
-        evidence = []
-        notes = []
+        data_lines = []
+        in_data = False
 
-        current_section = None
-
-        for line in lines:
+        for line in markdown.splitlines():
             stripped = line.strip()
 
-            if stripped == "# Evidence":
-                current_section = "evidence"
+            if stripped == "```json":
+                in_data = True
                 continue
 
-            if stripped == "# Notes":
-                current_section = "notes"
+            if stripped == "```" and in_data:
+                in_data = False
                 continue
 
-            if stripped.startswith("# "):
-                current_section = None
+            if in_data:
+                data_lines.append(line)
                 continue
 
-            if not stripped.startswith("- "):
-                continue
-
-            item = stripped[2:].strip()
-
-            if current_section == "evidence":
-                if item:
-                    evidence.append(item)
-                continue
-
-            if current_section == "notes":
-                if item:
-                    notes.append(item)
-                continue
-
-            if ":" not in item:
-                continue
-
-            key, value = item.split(":", 1)
-            metadata[key.strip()] = value.strip()
+            if stripped.startswith("- ") and ":" in stripped:
+                key, value = stripped[2:].split(":", 1)
+                metadata[key.strip()] = value.strip()
 
         return Observation(
             id=metadata["ID"],
-            type=metadata["Type"],
-            title=title,
-            author=metadata["Author"],
-            created=date.today(),
-            updated=date.today(),
-            platform=metadata["Platform"],
+            mission_id=self._none(metadata.get("Mission")),
+            tool_run_id=self._none(metadata.get("ToolRun")),
+            evidence_id=self._none(metadata.get("Evidence")),
             category=metadata["Category"],
-            difficulty=metadata["Difficulty"],
-            status=metadata["Status"],
-            mission_id=metadata.get("Mission") or None,
-            evidence=evidence,
-            notes=notes,
+            data=json.loads("\n".join(data_lines)) if data_lines else {},
+            confidence=float(metadata.get("Confidence", 1.0)),
+            observed_at=datetime.fromisoformat(metadata["Observed At"]),
         )
+
+    def _none(self, value: str | None) -> str | None:
+        if not value or value == "None":
+            return None
+
+        return value
