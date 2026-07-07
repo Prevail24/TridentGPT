@@ -17,7 +17,7 @@ from cli.commands.status import mission_status
 from cli.commands.complete_mission import complete_mission
 from cli.commands.archive_mission import archive_mission
 from cli.commands.recon_nmap import recon_nmap
-
+from cli.commands.loom import show_loom
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 
 
@@ -26,12 +26,17 @@ def main():
         prog="trident",
         description="TridentGPT - The Watchers Intelligence Platform",
     )
+    
+    subparsers = parser.add_subparsers(dest="command")
 
-    subparsers = parser.add_subparsers(dest="domain")
+    loom_parser = subparsers.add_parser("loom")
+    loom_parser.add_argument("entity_value")
+
     mission_parser = subparsers.add_parser(
         "mission",
         help="Mission commands",
     )
+
     mission_subparsers = mission_parser.add_subparsers(dest="action")
     mission_subparsers.add_parser(
         "new",
@@ -215,7 +220,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.domain == "mission":
+    if args.command == "loom":
+        show_loom(args.entity_value)
+        return
+
+    if args.command == "mission":
         if args.action in {"new", "create"}:
             new_mission()
         elif args.action == "open":
@@ -231,13 +240,13 @@ def main():
         else:
             mission_parser.print_help()
 
-    elif args.domain == "recon":
+    elif args.command == "recon":
         if args.tool == "nmap":
             recon_nmap(args.target)
         else:
             recon_parser.print_help()
 
-    elif args.domain == "observation":
+    elif args.command == "observation":
         if args.action == "create":
             new_observation()
         elif args.action == "list":
@@ -247,25 +256,25 @@ def main():
         else:
             observation_parser.print_help()
 
-    elif args.domain == "evidence":
+    elif args.command == "evidence":
         if args.action == "create":
             create_evidence()
         else:
             evidence_parser.print_help()
     
-    elif args.domain == "weaver":
+    elif args.command == "weaver":
         if args.action == "analyze":
             analyze_observation(args.observation_id)
         else:
             weaver_parser.print_help()
 
-    elif args.domain == "map":
+    elif args.command == "map":
         if args.target_type == "mission":
             map_mission(args.target_id)
         elif args.target_type == "entity":
             map_entity(args.target_id)
 
-    elif args.domain == "entity":
+    elif args.command == "entity":
         if args.action == "create":
             create_entity()
         elif args.action == "open":
@@ -273,10 +282,10 @@ def main():
         else:
             entity_parser.print_help()
 
-    elif args.domain == "search":
+    elif args.command == "search":
         search(args.query)
 
-    elif args.domain == "relationship":
+    elif args.command == "relationship":
         if args.action == "create":
             create_relationship()
         elif args.action == "open":

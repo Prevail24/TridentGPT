@@ -9,6 +9,23 @@ class RelationshipRepository:
     """
     Repository for canonical relationships.
     """
+    def find(
+            self,
+            *,
+            source_id: str,
+            target_id: str,
+            relationship_type: str,
+        ) -> Relationship | None:
+
+            for relationship in self.list():
+                if (
+                    relationship.source_id == source_id
+                    and relationship.target_id == target_id
+                    and relationship.relationship_type == relationship_type
+                ):
+                    return relationship
+
+            return None    
 
     def __init__(self):
         self.parser = RelationshipParser()

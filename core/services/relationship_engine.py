@@ -19,6 +19,15 @@ class RelationshipEngine:
         confidence: float = 1.0,
     ) -> Relationship:
 
+        existing = self.repository.find(
+            source_id=source_id,
+            target_id=target_id,
+            relationship_type=relationship_type,
+        )
+
+        if existing:
+            return existing
+
         relationship = Relationship(
             id=self.repository.next_id(),
             source_id=source_id,
