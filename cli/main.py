@@ -19,7 +19,7 @@ from cli.commands.archive_mission import archive_mission
 from cli.commands.recon_nmap import recon_nmap
 from cli.commands.loom import show_loom
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
-
+from cli.commands.host import show_host
 
 def main():
     parser = argparse.ArgumentParser(
@@ -31,6 +31,17 @@ def main():
 
     loom_parser = subparsers.add_parser("loom")
     loom_parser.add_argument("entity_value")
+
+    
+    host_parser = subparsers.add_parser(
+        "host",
+        help="Display a host profile",
+    )
+
+    host_parser.add_argument(
+        "target",
+        help="Host or IP address",
+    )
 
     mission_parser = subparsers.add_parser(
         "mission",
@@ -239,6 +250,9 @@ def main():
             list_missions()
         else:
             mission_parser.print_help()
+
+    elif args.command == "host":
+        show_host(args.target)
 
     elif args.command == "recon":
         if args.tool == "nmap":
