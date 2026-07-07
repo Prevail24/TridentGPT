@@ -1,17 +1,19 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime
 
 
-@dataclass
+@dataclass(frozen=True)
 class Relationship:
     """
-    Connects two Entities together.
+    Canonical relationship between two entities.
     """
 
     id: str
 
-    source: str
-    relationship: str
-    target: str
+    source_id: str
+    target_id: str
+
+    relationship_type: str
 
     confidence: float = 1.0
-    status: str = "active"
+    created_at: datetime = field(default_factory=datetime.utcnow)

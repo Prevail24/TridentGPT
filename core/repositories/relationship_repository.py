@@ -7,56 +7,51 @@ from core.parsers.relationship_parser import RelationshipParser
 
 class RelationshipRepository:
     """
-    Handles persistence for Relationship objects.
+    Repository for canonical relationships.
     """
 
     def __init__(self):
         self.parser = RelationshipParser()
 
-    def save(self, relationship: Relationship) -> Path:
-        year = relationship.id.split("-")[1]
+    def next_id(self) -> str:
+        root = Config.KNOWLEDGE_DIR / "relationships"
+        root.mkdir(parents=True, exist_ok=True)
 
-        relationship_root = (
-            Config.KNOWLEDGE_DIR
-            / "relationships"
-            / year
+        count = len(list(root.glob("REL-*.md"))) + 1
+
+        return f"REL-2026-{count:04d}"
+
+    def save(self, relationship: Relationship) -> Path:
+        root = Config.KNOWLEDGE_DIR / "relationships"
+        root.mkdir(parents=True, exist_ok=True)
+
+        path = root / f"{relationship.id}.md"
+
+        path.write_text(
+            self.parser.serialize(relationship),
+            encoding="utf-8",
         )
 
-        relationship_root.mkdir(parents=True, exist_ok=True)
-
-        filepath = relationship_root / f"{relationship.id}.md"
-
-        markdown = self.parser.serialize(relationship)
-        filepath.write_text(markdown, encoding="utf-8")
-
-        return filepath
+        return path
 
     def open(self, relationship_id: str) -> Relationship:
-        """
-        Return one Relationship object by ID.
-        """
-        year = relationship_id.split("-")[1]
-
-        filepath = (
+        path = (
             Config.KNOWLEDGE_DIR
             / "relationships"
-            / year
             / f"{relationship_id}.md"
         )
 
-        markdown = filepath.read_text(encoding="utf-8")
+        markdown = path.read_text(encoding="utf-8")
 
         return self.parser.parse(markdown)
 
     def list(self) -> list[Relationship]:
-        """
-        Return all Relationship objects stored in The Loom.
-        """
-        relationship_root = Config.KNOWLEDGE_DIR / "relationships"
+        root = Config.KNOWLEDGE_DIR / "relationships"
+        root.mkdir(parents=True, exist_ok=True)
 
-        relationship_items = []
+        relationships = []
 
-        for file in sorted(relationship_root.glob("**/*.md")):
-            relationship_items.append(self.open(file.stem))
+        for file in sorted(root.glob("REL-*.md")):
+            relationships.append(self.open(file.stem))
 
-        return relationship_items
+        return relationships

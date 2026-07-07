@@ -1,5 +1,4 @@
-from uuid import uuid4
-
+from core.services.id_generator import IdGenerator
 from core.models.observation import Observation
 from core.repositories.observation_repository import ObservationRepository
 
@@ -24,7 +23,7 @@ class ObservationEmitter:
     ) -> Observation:
 
         observation = Observation(
-            id=f"OBS-{uuid4().hex[:8].upper()}",
+            id=IdGenerator.next("OBS"),
             mission_id=mission_id,
             tool_run_id=tool_run_id,
             evidence_id=evidence_id,

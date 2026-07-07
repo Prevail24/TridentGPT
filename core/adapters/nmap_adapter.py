@@ -6,7 +6,7 @@ from core.config import Config
 from core.engine import TridentEngine
 from core.parsers.nmap.xml_parser import NmapXMLParser
 from core.services.observation_emitter import ObservationEmitter
-
+from core.services.observation_engine import ObservationEngine
 
 class NmapAdapter(ToolAdapter):
     """
@@ -49,6 +49,7 @@ class NmapAdapter(ToolAdapter):
 
         # Emit canonical observations
         emitter = ObservationEmitter()
+        engine = ObservationEngine()
 
         for obs in observations:
             emitted = emitter.emit(
@@ -69,6 +70,7 @@ class NmapAdapter(ToolAdapter):
             )
 
             run.observations.append(emitted.id)
+            engine.process(emitted)
 
         # Save the updated ToolRun
         self.engine.tool_runs.repository.save(run)

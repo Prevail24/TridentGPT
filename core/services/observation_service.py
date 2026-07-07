@@ -1,7 +1,7 @@
 from datetime import date
 
 from core.models.observation import Observation
-from core.services.id_generator import IDGenerator
+from core.services.id_generator import IdGenerator
 from core.results.create_observation_result import CreateObservationResult
 from core.repositories.observation_repository import ObservationRepository
 
@@ -23,7 +23,7 @@ class ObservationService:
         mission_id: str | None = None,
     ) -> CreateObservationResult:
 
-        generator = IDGenerator()
+        generator = IdGenerator()
         observation_id = generator.generate("OBS")
 
         observation = Observation(

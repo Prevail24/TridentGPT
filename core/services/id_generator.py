@@ -1,18 +1,38 @@
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 
+from core.config import Config
 
-class IDGenerator:
+
+class IdGenerator:
     """
-    Generates sequential IDs for The Watchers.
+    Generates consistent Trident IDs.
+
+    Examples:
+    MIS-2026-0001
+    RUN-2026-0001
+    ENT-2026-0001
+    OBS-2026-0001
+    REL-2026-0001
     """
 
-    def generate(self, prefix: str) -> str:
+    PATHS = {
+        "MIS": Config.KNOWLEDGE_DIR / "missions",
+        "RUN": Config.KNOWLEDGE_DIR / "tool_runs",
+        "ENT": Config.KNOWLEDGE_DIR / "entities",
+        "OBS": Config.KNOWLEDGE_DIR / "observations",
+        "REL": Config.KNOWLEDGE_DIR / "relationships",
+    }
 
-        year = date.today().year
-        folder = Path(f"knowledge/observations/{year}")
-        folder.mkdir(parents=True, exist_ok=True)
-        existing = sorted(folder.glob(f"{prefix}-{year}-*.md"))
-        number = len(existing) + 1
+    @classmethod
+    def next(cls, prefix: str) -> str:
+        if prefix not in cls.PATHS:
+            raise ValueError(f"Unknown ID prefix: {prefix}")
 
-        return f"{prefix}-{year}-{number:04d}"
+        year = datetime.utcnow().year
+        root = cls.PATHS[prefix]
+        root.mkdir(parents=True, exist_ok=True)
+
+        existing = list(root.glob(f"{prefix}-{year}-*.md"))
+
+        return f"{prefix}-{year}-{len(existing) + 1:04d}"
