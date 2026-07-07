@@ -31,6 +31,41 @@ class ObservationEngine:
                 observation.data.get("service", "unknown"),
             )
 
+            product = None
+            version = None
+
+            if observation.data.get("product"):
+                product = self.entities.resolve(
+                    "product",
+                    observation.data["product"],
+                )
+
+            if observation.data.get("version"):
+                version = self.entities.resolve(
+                    "version",
+                    observation.data["version"],
+                )
+
+            if product:
+                service_product = self.relationships.create(
+                    source_id=service.id,
+                    target_id=product.id,
+                    relationship_type="runs_product",
+                )
+
+                relationships.append(service_product)
+                resolved.append(product)
+
+            if version:
+                version_relationship = self.relationships.create(
+                    source_id=product.id if product else service.id,
+                    target_id=version.id,
+                    relationship_type="has_version",
+                )
+
+                relationships.append(version_relationship)
+                resolved.append(version)
+
             host_port = self.relationships.create(
                 source_id=host.id,
                 target_id=port.id,

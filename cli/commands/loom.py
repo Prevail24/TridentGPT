@@ -1,6 +1,19 @@
 from core.services.loom_service import LoomService
 
 
+def render_tree(loom, entity, prefix=""):
+    relationships = loom.outgoing_relationships(entity.id)
+
+    for relationship, target in relationships:
+        print(f"{prefix}└── {relationship.relationship_type}")
+        print(f"{prefix}    └── {target.entity_type}: {target.value}")
+
+        render_tree(
+            loom,
+            target,
+            prefix + "        ",
+        )
+
 def show_loom(entity_value: str):
     loom = LoomService()
 
@@ -26,18 +39,4 @@ def show_loom(entity_value: str):
         print("No relationships.")
         return
 
-    print("Relationships")
-    print("-------------")
-
-    for relationship_type, targets in graph.items():
-        print(f"{relationship_type}")
-
-        for target in targets:
-            if target is None:
-                continue
-
-            print(
-                f"  -> {target.entity_type}: {target.value}"
-            )
-
-        print()
+    render_tree(loom, entity)

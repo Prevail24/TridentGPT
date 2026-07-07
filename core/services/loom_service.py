@@ -43,3 +43,24 @@ class LoomService:
                 )
 
         return entity, graph
+
+    def outgoing_relationships(self, entity_id: str):
+        entities = {
+            e.id: e
+            for e in self.entities.list()
+        }
+
+        results = []
+
+        for rel in self.relationships.list():
+            if rel.source_id != entity_id:
+                continue
+
+            target = entities.get(rel.target_id)
+
+            if target is None:
+                continue
+
+            results.append((rel, target))
+
+        return results
