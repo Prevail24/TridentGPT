@@ -1,5 +1,5 @@
 from core.services.loom_service import LoomService
-
+from core.services.history_service import HistoryService
 
 class HostProfileService:
     """
@@ -8,6 +8,7 @@ class HostProfileService:
 
     def __init__(self):
         self.loom = LoomService()
+        self.history = HistoryService()
 
     def build(self, host: str):
         result = self.loom.graph_for_entity(host)
@@ -16,9 +17,15 @@ class HostProfileService:
             return None
 
         entity, graph = result
+        history = self.history.build(host)
 
         profile = {
             "host": entity.value,
+
+            "first_seen": history["first_seen"] if history else None,
+            "last_seen": history["last_seen"] if history else None,
+            "observation_count": history["observation_count"] if history else 0,
+
             "ports": [],
             "services": [],
             "products": [],

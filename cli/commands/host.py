@@ -19,6 +19,13 @@ def show_host(host: str):
     print(f"Host: {profile['host']}")
     print()
 
+    print("History")
+    print("-------")
+    print(f"First Seen  : {profile['first_seen']}")
+    print(f"Last Seen   : {profile['last_seen']}")
+    print(f"Observations: {profile['observation_count']}")
+    print()
+
     print("Ports")
     print("-----")
     for port in sorted(profile["ports"]):
