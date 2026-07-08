@@ -21,6 +21,9 @@ from cli.commands.loom import show_loom
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 from cli.commands.host import show_host
 from cli.commands.timeline import show_timeline
+from cli.commands.chronicle import show_chronicle
+
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -42,6 +45,16 @@ def main():
     host_parser.add_argument(
         "target",
         help="Host or IP address",
+    )
+
+    chronicle_parser = subparsers.add_parser(
+        "chronicle",
+        help="Display a mission chronicle for a host",
+    )
+
+    chronicle_parser.add_argument(
+        "host",
+        help="Host to chronicle",
     )
 
     timeline_parser = subparsers.add_parser(
@@ -267,6 +280,9 @@ def main():
 
     elif args.command == "host":
         show_host(args.target)
+
+    elif args.command == "chronicle":
+        show_chronicle(args.host)
 
     elif args.command == "recon":
         if args.tool == "nmap":
