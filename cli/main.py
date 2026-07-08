@@ -20,6 +20,7 @@ from cli.commands.recon_nmap import recon_nmap
 from cli.commands.loom import show_loom
 from core.dashboards.observatory_dashboard import ObservatoryDashboard
 from cli.commands.host import show_host
+from cli.commands.timeline import show_timeline
 
 def main():
     parser = argparse.ArgumentParser(
@@ -41,6 +42,16 @@ def main():
     host_parser.add_argument(
         "target",
         help="Host or IP address",
+    )
+
+    timeline_parser = subparsers.add_parser(
+        "timeline",
+        help="Display a host timeline",
+    )
+
+    timeline_parser.add_argument(
+        "host",
+        help="Host to display",
     )
 
     mission_parser = subparsers.add_parser(
@@ -250,6 +261,9 @@ def main():
             list_missions()
         else:
             mission_parser.print_help()
+
+    elif args.command == "timeline":
+        show_timeline(args.host)
 
     elif args.command == "host":
         show_host(args.target)
