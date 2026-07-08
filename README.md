@@ -1,127 +1,273 @@
-# Trident
+# 🔱 Trident IOS 🔱
+## Intelligence Operating System
 
-> **An Intelligence Operating System for Cybersecurity.**
+> **Observe. Remember. Reason.**
 
-Trident is built on one simple belief:
+Trident is an open-source Intelligence Operating System for cybersecurity.
 
-**Every investigation should make every future investigation easier.**
+Traditional security tools produce output.
 
-It is not another collection of scanners.
+Trident transforms that output into structured intelligence.
 
-It is a system designed to accumulate knowledge, preserve context, and amplify the operator over years of learning.
+Instead of treating every scan, report, or assessment as isolated text, Trident converts observations into a persistent knowledge graph that remembers what was discovered, how assets relate to one another, what has changed over time, and what deserves an analyst's attention.
 
-# The Trident Vision
+The goal is simple:
 
-## Why Trident Exists
-
-Cybersecurity is not difficult because there are too few tools.
-
-The student must learn about EVERYTHING.
-
-It is difficult because knowledge is fragmented.
-
-Every investigation starts over.
-
-Every CTF begins clean and ends with another browser full of tabs... etc.
-
-Every lesson is eventually forgotten.
-
-Every hard-earned insight slowly disappears.
-
-Trident exists to change that.
+> **Never make a human rediscover what Trident already knows.**
 
 ---
 
-## Intelligence Over Information
+# Why Trident?
 
-Tools collect information.
+Modern cybersecurity relies on incredible tools.
 
-Operators create intelligence.
+- Nmap
+- HTTPX
+- Nuclei
+- BloodHound
+- linPEAS
+- winPEAS
+- Certipy
+- ffuf
+- and many more...
 
-Trident remembers intelligence.
+These tools are excellent at collecting evidence.
 
-Every scan.
+But they all answer the same question:
 
-Every observation.
+> **"What did I find?"**
 
-Every relationship.
+Trident answers a different question:
 
-Every lesson.
-
-Every mistake.
-
-Every victory.
-
-Nothing valuable should ever be lost twice.
-
----
-
-## Reduce the Cost of Curiosity
-
-Curiosity creates experts.
-
-But curiosity is expensive.
-
-New tools.
-
-New protocols.
-
-New technologies.
-
-New documentation.
-
-New rabbit holes.
-
-Trident exists to make exploration cheaper.
-
-The easier it becomes to explore,
-the faster operators grow.
+> **"What does it mean?"**
 
 ---
 
-## Every Investigation Improves the Next
+# The Philosophy
 
-A completed mission is not the end.
+Every piece of evidence becomes a standardized Observation.
 
-It is an investment.
+Every Observation strengthens a shared Knowledge Graph.
 
-Today's investigation should make tomorrow's investigation easier.
+Every investigation builds upon previous investigations.
 
-Knowledge compounds.
+Knowledge is never discarded.
+
+It grows.
+
+```
+        Scanner Output
+               │
+               ▼
+        Canonical Observation
+               │
+               ▼
+        Knowledge Graph
+               │
+      ┌────────┴────────┐
+      │                 │
+      ▼                 ▼
+ Asset Profiles     Relationships
+      │                 │
+      └────────┬────────┘
+               ▼
+         History & Timeline
+               │
+               ▼
+        Differential Analysis
+               │
+               ▼
+      Intelligence & AI Analyst
+```
 
 ---
 
-## AI Is Not The Product
+# Core Principles
 
-Artificial Intelligence is not the goal.
+### Observe
 
-It is an amplifier.
+Collect observations from any security tool.
 
-The Loom gives AI memory.
+### Remember
 
-Mission Control gives AI context.
+Build a persistent intelligence archive.
 
-The Observatory gives AI awareness.
+### Connect
 
-Without knowledge,
-AI is only guessing.
+Relate assets, technologies, identities, services, vulnerabilities, and infrastructure.
+
+### Reason
+
+Identify changes, relationships, risks, and opportunities automatically.
+
+### Explain
+
+Transform complex technical output into understandable intelligence.
 
 ---
 
-## Build Operators
+# Current Capabilities
 
-The greatest measure of Trident is not:
+✅ Canonical Observation Model
 
-How many scans it runs.
+✅ Entity Resolution
 
-How many CVEs it finds.
+✅ Relationship Graph
 
-How many reports it generates.
+✅ The Loom (Knowledge Explorer)
 
-The true measure is simple:
+✅ Host Profiles
 
-Is the operator more capable after using Trident than they would have been without it?
+✅ Asset History
 
-If the answer is yes...
+✅ Differential Intelligence
 
-Then Trident has succeeded.
+🚧 Timeline Engine
+
+🚧 Multi-Sensor Fusion
+
+🚧 AI Investigation Reports
+
+🚧 Risk & Interestingness Engine
+
+---
+
+# Architecture
+
+```
+                    🔱 TRIDENT IOS 🔱
+
+                  COLLECTION LAYER
+──────────────────────────────────────────────────
+
+Nmap
+HTTPX
+DNS
+WHOIS
+SSL
+Nuclei
+linPEAS
+winPEAS
+BloodHound
+Certipy
+Cloud APIs
+...
+
+                    │
+                    ▼
+
+                OBSERVATION LAYER
+──────────────────────────────────────────────────
+
+Canonical Observations
+
+                    │
+                    ▼
+
+                 KNOWLEDGE LAYER
+──────────────────────────────────────────────────
+
+Entities
+
+Relationships
+
+Evidence
+
+History
+
+Host Profiles
+
+The Loom
+
+                    │
+                    ▼
+
+                 REASONING LAYER
+──────────────────────────────────────────────────
+
+Differential Analysis
+
+Timeline Engine
+
+Risk Engine
+
+Attack Path Analysis
+
+Recommendation Engine
+
+Interestingness Engine
+
+                    │
+                    ▼
+
+             INTELLIGENCE INTERFACE
+──────────────────────────────────────────────────
+
+CLI
+
+Web Application
+
+REST API
+
+AI Analyst
+
+Mission Reports
+```
+
+---
+
+# Long-Term Vision
+
+Imagine running a cybersecurity assessment and asking:
+
+> "What changed since last month?"
+
+> "Which hosts are becoming riskier?"
+
+> "Which findings matter most?"
+
+> "Explain this linPEAS report."
+
+> "Show me every attack path leading to Domain Admin."
+
+Instead of manually correlating thousands of lines of output, Trident continuously builds an evolving model of the environment and provides the context required to make informed decisions.
+
+The goal is not to replace analysts.
+
+The goal is to amplify them.
+
+---
+
+# Educational Mission
+
+Trident is designed to help experienced professionals move faster while making advanced cybersecurity concepts significantly more approachable for newcomers.
+
+Rather than replacing industry tools like Nmap, BloodHound, linPEAS, or winPEAS, Trident provides context, relationships, and explanations that help users understand **why** findings matter and how they connect.
+
+Learning should begin with understanding—not information overload.
+
+---
+
+# Current Status
+
+Trident is under active development.
+
+The platform is being built incrementally with a strong emphasis on architecture, modularity, extensibility, and long-term maintainability.
+
+Every capability is designed as an independent intelligence service that contributes to a shared knowledge graph.
+
+---
+
+# License
+
+(To be determined)
+
+---
+
+# Motto
+
+> **Observe. Remember. Reason.**
+
+> **From Observations to Intelligence.**
+
+🔱
